@@ -9,6 +9,8 @@ def getRankings(rankings_url=rankings_url):
 
     file_AP25 = open('APtop25.csv', 'w')
     file_USAcoaches = open('USAtodayCoaches.csv', 'w')
+    #file_AP25 = open('a.test', 'w')
+    #file_USAcoaches = open('b.test', 'w')
 
     idx = 0
 
@@ -16,6 +18,9 @@ def getRankings(rankings_url=rankings_url):
     for file in [file_AP25, file_USAcoaches]:
         idx += webpage[idx:].find('stathead')
         ti = idx
+
+        # 100 is arbitrary
+        idx += 100
         
         teams = []
         
@@ -28,26 +33,28 @@ def getRankings(rankings_url=rankings_url):
             ti += webpage[ti:].find('>')
             end = ti + webpage[ti:].find('<')
             team_name = webpage[ti+1:end]
-            
+
             # Get record and points
-            record, points = '', 0
-            for k in xrange(2):
+            record, points, count = '', 0, 0
+            while count < 2:
                 ti += webpage[end:].find('center')
                 ti += webpage[ti:].find('>')
                 end = ti + webpage[ti:].find('<')
                 attr = webpage[ti+1:end]
+                #print (count, attr)
                 if attr.find('-') != -1:
                     # Get record e.g. 20-0
                     record = attr
-                    continue
+                    count += 1
                 elif attr == '':
                     continue
-                # Get points e.g. 1653
-                points = int(attr.replace(',', ''))
-            
+                else:
+                    # Get points e.g. 1653
+                    count += 1
+                    points = int(attr.replace(',', ''))
+
             # One team's info found
             teams.append([rank, team_name, record, points])
-
 
         print teams
 
