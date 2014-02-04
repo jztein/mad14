@@ -2,13 +2,14 @@ import urllib2, csv
 
 #tables = ['AP Top 25', 'USA Today Coaches Poll']
 headers = [['Rank', 'Team', 'Record', 'Points']]
+
 rankings_url = 'http://espn.go.com/mens-college-basketball/rankings'
 
-def getRankings(rankings_url=rankings_url):
+def getRankings(rankings_url=rankings_url, year='2014'):
     webpage = urllib2.urlopen(rankings_url).read()
 
-    file_AP25 = open('APtop25.csv', 'w')
-    file_USAcoaches = open('USAtodayCoaches.csv', 'w')
+    file_AP25 = open('APtop25_%s.csv' % year, 'w')
+    file_USAcoaches = open('USAtodayCoaches_%s.csv' % year, 'w')
     #file_AP25 = open('a.test', 'w')
     #file_USAcoaches = open('b.test', 'w')
 
@@ -65,5 +66,12 @@ def getRankings(rankings_url=rankings_url):
         file.close()
 
 if __name__ == '__main__':
+    # get rankings from 2003 through 2013
+    for y in xrange(2003, 2014):
+        year = str(y)
+        url = 'http://espn.go.com/mens-college-basketball/rankings/_/year/%s/week/14/seasontype/2' % year
+        getRankings(url, year)
+
+    # get 2014 rankings
     getRankings()
     exit('Finished getting rankings!')
