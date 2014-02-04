@@ -39,10 +39,11 @@ def getRankings(rankings_url=rankings_url):
                 if attr.find('-') != -1:
                     # Get record e.g. 20-0
                     record = attr
-                elif attr.find(',') != -1:
-                    # Get points e.g. 1653
-                    points = int(attr.replace(',', ''))
-                    break
+                    continue
+                elif attr == '':
+                    continue
+                # Get points e.g. 1653
+                points = int(attr.replace(',', ''))
             
             # One team's info found
             teams.append([rank, team_name, record, points])
